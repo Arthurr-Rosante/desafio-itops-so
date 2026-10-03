@@ -1,7 +1,10 @@
 [project]
 name = "desafio-itops-so"
 version = "0.1.0"
-description = "Add your description here"
+description = "Repositório do Projeto ITOPS de Sistemas Operacionais em Nuvem na SPTech"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "boto3>=1.43.108",
+    "pandas>=3.0.6",
+]
