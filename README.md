@@ -8,14 +8,73 @@
 
 ### _- Camada 01:_
 
-Antenas CSV - Headers
+Antenas JSON - Formato
 
-```csv
-ID_antena,Bytes_sent,Bytes_recv,Active_conn,CPU_usage,RAM_usage
+```json
+{
+    "id": "AP-XPTO",
+    "timestamp": "YYYY-MM-DD HH:MM",
+    "network": {
+        "bytes": {
+            "sent": 999,
+            "received": 999
+        },
+        "connections": {
+            "active": 99,
+            "connectedIPs": [...]
+        }
+    },
+    "components": [
+        "cpu": {
+            "usage": 0.99,
+            "measuredIn": "pct"
+        },
+        "ram": {
+            "usage": 0.99,
+            "measuredIn": "pct"
+        }
+    ]
+}
 ```
 
-Firewall CSV - Headers
+Firewall JSON - Formato
 
-```csv
-Active_sessions,Dropped_packets,top_blocked_ip,CPU_usage,RAM_usage,Bytes_sent,Bytes_recv
+```json
+{
+    "id": "FW-XPTO",
+    "timestamp": "YYYY-MM-DD HH:MM",
+    "network": {
+        "bytes": {
+            "sent": 999,
+            "received": 999
+        },
+        "packets": {
+            "sent": 999,
+            "received": 999,
+            "dropped": 999,
+        },
+        "sessions": {
+            "active": 99,
+            "topBlockedIPs": [...],
+            "connectedSessions": [
+                {
+                    "ipv4": "0.0.0.0",
+                    "type": "tcp"   // ou "udp"
+                },
+                // demais sessões...
+            ]
+        }
+    },
+    "components": [
+        "cpu": {
+            "usage": 0.99,
+            "measuredIn": "pct"
+        },
+        "ram": {
+            "usage": 0.99,
+            "measuredIn": "pct"
+        }
+    ]
+}
+Active_sessions,Dropped_packets,top_blocked_ip
 ```

@@ -1,5 +1,9 @@
-import io, os, boto3
-import pandas as pd
+import io, os, boto3, psutil, json, logging
+from datetime import datetime
+
+from utils.random_antena import gen_random_antena_capture
+
+OUTPUT_DIR = "out"
 
 def main():
     session = boto3.Session(
@@ -11,13 +15,22 @@ def main():
     s3_client = session.client("s3")
 
     bucket_name="itops-04261042"
-    file_key = "01-bronze/2026-02-10_22-30_ap01.json"
 
-    response = s3_client.get_object(Bucket=bucket_name, Key=file_key)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    df = pd.read_csv(io.BytesIO(response["Body"].read()), sep=";")
-    print(df.head())
+    captura_antena = gen_random_antena_capture()
 
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    fpath = f"./{OUTPUT_DIR}/{now}_ap01.json"
+
+    data_list = []
+    if os.path.exists(fpath) and os.path.getsize(fpath) > 0:
+        with open(fpath, "r") as f:
+            data_list = json.load(f)
+
+    data_list.append(captura_antena)
+    with open(fpath, "w") as f:
+        json.dump(data_list, f, indent=2)
 
 if __name__ == "__main__":
     main()
