@@ -4,77 +4,44 @@
 
 <img src="./assets/arquitetura-projeto.png" alt="Arquitetura do Projeto" />
 
-## **2. Camadas**
+## **2. Camadas (Medallion Architecture)**
 
-### _- Camada 01:_
+### _- Camada 01: **01-bronze/**_
 
 Antenas JSON - Formato
-
 ```json
-{
-    "id": "AP-XPTO",
-    "timestamp": "YYYY-MM-DD HH:MM",
-    "network": {
-        "bytes": {
-            "sent": 999,
-            "received": 999
-        },
-        "connections": {
-            "active": 99,
-            "connectedIPs": [...]
-        }
-    },
-    "components": [
-        "cpu": {
-            "usage": 0.99,
-            "measuredIn": "pct"
-        },
-        "ram": {
-            "usage": 0.99,
-            "measuredIn": "pct"
-        }
-    ]
-}
+    {
+        "id_antena": "AP-000000000000",
+        "active_conn": 60,
+        "bytes_sent": 123123123123,
+        "bytes_recv": 123123123123,
+        "cpu_usage": 99.9,
+        "ram_usage": 99.9
+    }
 ```
 
 Firewall JSON - Formato
-
 ```json
-{
-    "id": "FW-XPTO",
-    "timestamp": "YYYY-MM-DD HH:MM",
-    "network": {
-        "bytes": {
-            "sent": 999,
-            "received": 999
-        },
-        "packets": {
-            "sent": 999,
-            "received": 999,
-            "dropped": 999,
-        },
-        "sessions": {
-            "active": 99,
-            "topBlockedIPs": [...],
-            "connectedSessions": [
-                {
-                    "ipv4": "0.0.0.0",
-                    "type": "tcp"   // ou "udp"
-                },
-                // demais sessões...
-            ]
-        }
-    },
-    "components": [
-        "cpu": {
-            "usage": 0.99,
-            "measuredIn": "pct"
-        },
-        "ram": {
-            "usage": 0.99,
-            "measuredIn": "pct"
-        }
-    ]
-}
-Active_sessions,Dropped_packets,top_blocked_ip
+    {
+        "id_dispositivo": "FW-000000000000",
+        "active_sessions": 10000,
+        "dropped_packets": 9999,
+        "top_blocked_ip": "255.255.255.255",
+        "bytes_sent": 123123123123,
+        "bytes_recv": 123123123123,
+        "cpu_usage": 99.9,
+        "ram_usage": 99.9
+    }
+```
+
+### _- Camada 02: **02-silver/**_
+```csv
+    id;tipo_dispositivo;timestamp;active_conn;active_sessions;bytes_sent_mbps;bytes_recv_mbps;cpu_usage;ram_usage;status_carga
+AP-000000000000;Antena;YYYY-MM-DD HH:MM:SS;60;0;123123123123;123123123123;99.9;99.9;Alta Densidade, Gargalo de Processamento, OOM
+```
+
+### _- Camada 03: **03-gold/**_
+```csv
+id;amostras_analisadas;media_trafego_mbps;media_cpu_usage;razao_trafego_consumo_medio;recomendacao
+AP-000000000000;10;0.57;37.34;115.95;Revisão de Hardware
 ```
